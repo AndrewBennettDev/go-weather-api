@@ -25,7 +25,7 @@ func getCurrentWeather(w http.ResponseWriter, r *http.Request){
     url := "https://weatherapi-com.p.rapidapi.com/current.json?q=" + zip
 	req, _ := http.NewRequest("GET", url, nil)
 
-	req.Header.Add("X-RapidAPI-Key", "721a5b3fb4msh34887dec04bfaeap11029fjsn289a1e4b579b")
+	req.Header.Add("X-RapidAPI-Key", "[secret_value)
 	req.Header.Add("X-RapidAPI-Host", "weatherapi-com.p.rapidapi.com")
 
 	res, _ := http.DefaultClient.Do(req)
