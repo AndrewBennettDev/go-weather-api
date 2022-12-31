@@ -1,2 +1,2 @@
-As of the initial commit this is highly WIP. I've spent most of my time as a developer using Java and C++, and I want to be more comfortable with
-Golang. This will eventually be a functional API once I've experimented with a few different versions.
+This is an API written in Golang for calling endpoints from WeatherAPI.com (a free API through rapidapi.com). As a Java/C++ developer this is a personal
+project for me to become more familiar with Go. This is also an opportunity to benchmark this style of API in multiple langauges.
