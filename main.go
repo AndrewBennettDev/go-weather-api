@@ -10,7 +10,7 @@ import (
 
 const apiKey = "secret_here"
 func main() {
-//load in secrets from txt file
+	//load in secrets from txt file
 	handleRequests()
 }
 
@@ -37,7 +37,7 @@ func getCurrentWeather(w http.ResponseWriter, r *http.Request) {
 	url := "https://weatherapi-com.p.rapidapi.com/current.json?q=" + location
 	req, err := http.NewRequest("GET", url, nil) // _ is the error, don't drop it
 	// if err != nil
-// kube and io injection
+	// kube and io injection
 	req.Header.Add("X-RapidAPI-Key", apiKey )
 	req.Header.Add("X-RapidAPI-Host", "weatherapi-com.p.rapidapi.com")
 
