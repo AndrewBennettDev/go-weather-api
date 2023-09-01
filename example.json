@@ -1,0 +1,41 @@
+{
+  "location": {
+    "name": "Senoia",
+    "region": "Georgia",
+    "country": "USA",
+    "lat": 33.29,
+    "lon": -84.59,
+    "tz_id": "America/New_York",
+    "localtime_epoch": 1693403423,
+    "localtime": "2023-08-30 9:50"
+  },
+  "current": {
+    "last_updated_epoch": 1693403100,
+    "last_updated": "2023-08-30 09:45",
+    "temp_c": 23.3,
+    "temp_f": 73.9,
+    "is_day": 1,
+    "condition": {
+      "text": "Partly cloudy",
+      "icon": "//cdn.weatherapi.com/weather/64x64/day/116.png",
+      "code": 1003
+    },
+    "wind_mph": 2.2,
+    "wind_kph": 3.6,
+    "wind_degree": 75,
+    "wind_dir": "ENE",
+    "pressure_mb": 1008,
+    "pressure_in": 29.76,
+    "precip_mm": 0,
+    "precip_in": 0,
+    "humidity": 91,
+    "cloud": 25,
+    "feelslike_c": 25.9,
+    "feelslike_f": 78.5,
+    "vis_km": 16,
+    "vis_miles": 9,
+    "uv": 5,
+    "gust_mph": 9.4,
+    "gust_kph": 15.1
+  }
+}
