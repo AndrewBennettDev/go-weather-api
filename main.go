@@ -3,14 +3,17 @@ package main
 import (
 	"fmt"
 	"github.com/gorilla/mux"
+	goconfig "github.com/iglin/go-config"
 	"io/ioutil"
 	"log"
 	"net/http"
 )
 
-const apiKey = "secret_here"
-func main() {
-	//load in secrets from txt file
+var config = goconfig.NewConfig("./secretConfig.yaml", goconfig.Yaml)
+var apiHost = config.GetString("data.apiHost")
+var apiKey = config.GetString("data.apiKey")
+
+func main() {	
 	handleRequests()
 }
 
@@ -35,16 +38,16 @@ func getCurrentWeather(w http.ResponseWriter, r *http.Request) {
 	location := vars["location"]
 
 	url := "https://weatherapi-com.p.rapidapi.com/current.json?q=" + location
-	req, err := http.NewRequest("GET", url, nil) // _ is the error, don't drop it
+	req, _ := http.NewRequest("GET", url, nil) // _ is the error, don't drop it
 	// if err != nil
 	// kube and io injection
 	req.Header.Add("X-RapidAPI-Key", apiKey )
-	req.Header.Add("X-RapidAPI-Host", "weatherapi-com.p.rapidapi.com")
+	req.Header.Add("X-RapidAPI-Host", apiHost)
 
-	res, err := http.DefaultClient.Do(req)
+	res, _ := http.DefaultClient.Do(req)
 	// handle error dummy
 	defer res.Body.Close() //go read about defer
-	body, err := ioutil.ReadAll(res.Body)
+	body, _ := ioutil.ReadAll(res.Body)
 	// errors, damnit
 	fmt.Fprintf(w, string(body))
 }
@@ -57,7 +60,7 @@ func getCurrentAstronomyData(w http.ResponseWriter, r *http.Request) {
 	req, _ := http.NewRequest("GET", url, nil)
 
 	req.Header.Add("X-RapidAPI-Key", apiKey)
-	req.Header.Add("X-RapidAPI-Host", "weatherapi-com.p.rapidapi.com")
+	req.Header.Add("X-RapidAPI-Host", apiHost)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -75,7 +78,7 @@ func getTimeZone(w http.ResponseWriter, r *http.Request) {
 	req, _ := http.NewRequest("GET", url, nil)
 
 	req.Header.Add("X-RapidAPI-KEY", apiKey)
-	req.Header.Add("X-RapidAPI-HOST", "weatherapi-com.p.rapidapi.com")
+	req.Header.Add("X-RapidAPI-HOST", apiHost)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -93,7 +96,7 @@ func getSports(w http.ResponseWriter, r *http.Request) {
 	req, _ := http.NewRequest("GET", url, nil)
 
 	req.Header.Add("X-RapidAPI-KEY", apiKey)
-	req.Header.Add("X-RapidAPI-HOST", "weatherapi-com.p.rapidapi.com")
+	req.Header.Add("X-RapidAPI-HOST", apiHost)
 
 	res, _ := http.DefaultClient.Do(req)
 
