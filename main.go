@@ -20,33 +20,24 @@ func main() {
 func handleRequests() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", getList)
-	r.HandleFunc("/weather/{location}", getCurrentWeather)
-	r.HandleFunc("/astronomy/{location}", getCurrentAstronomyData)
-	r.HandleFunc("/timezone/{location}", getTimeZone)
-	r.HandleFunc("/sports/{location}", getSports)
-	r.HandleFunc("/all/{location}", getAll) // good luck...
+	//r.HandleFunc("/weather/{location}", getCurrentWeather)
+	//r.HandleFunc("/astronomy/{location}", getCurrentAstronomyData)
+	//r.HandleFunc("/timezone/{location}", getTimeZone)
+	//r.HandleFunc("/sports/{location}", getSports)
+	r.HandleFunc("/{endpoint}/{location}", getData)
 	log.Fatal(http.ListenAndServe(":8089", r)) // read about Go Contexts
 }
 
 func getList(w http.ResponseWriter, r *http.Request) {
-        fmt.Fprintf(w, "Available Endpoints:\n -/weather/{location}\n -/astronomy/{location}\n -/timezone/{location}\n -/sports/{location}")
+        fmt.Fprintf(w, "Available Endpoints:\n -/current/{location}\n -/astronomy/{location}\n -/timezone/{location}\n -/sports/{location}")
 }
 
-func getAll(w http.ResponseWriter, r *http.Request) {
+func getData(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
+	endpoint := vars["endpoint"]
 	location := vars["location"]
 
-	go getCurrentWeather(w, r)
-	go getCurrentAstronomyData(w, r)
-	go getTimeZone(w, r)
-	go getSports(w, r)
-}
-
-func getCurrentWeather(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	location := vars["location"]
-
-	url := "https://weatherapi-com.p.rapidapi.com/current.json?q=" + location
+	url := "https://weatherapi-com.p.rapidapi.com/" + endpoint + ".json?q=" + location
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 	   log.Fatal(err)
@@ -64,87 +55,6 @@ func getCurrentWeather(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 	   log.Fatal(err)
 	}
-
-	fmt.Fprintf(w, string(body))
-}
-
-func getCurrentAstronomyData(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	location := vars["location"]
-
-	url := "https://weatherapi-com.p.rapidapi.com/astronomy.json?q=" + location
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-	   log.Fatal(err)
-	}
-
-	req.Header.Add("X-RapidAPI-Key", apiKey)
-	req.Header.Add("X-RapidAPI-Host", apiHost)
-
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-	   log.Fatal(err)
-	}
-
-	defer res.Body.Close()
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-	   log.Fatal(err)
-	}
-
-	fmt.Fprintf(w, string(body))
-}
-
-func getTimeZone(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	location := vars["location"]
-	
-	url := "https://weatherapi-com.p.rapidapi.com/timezone.json?q=" + location
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-	   log.Fatal(err)
-	}
-
-	req.Header.Add("X-RapidAPI-KEY", apiKey)
-	req.Header.Add("X-RapidAPI-HOST", apiHost)
-
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-	   log.Fatal(err)
-	}
-
-	defer res.Body.Close()
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-	   log.Fatal(err)
-	}
-
-	fmt.Fprintf(w, string(body))
-}
-
-func getSports(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	location := vars["location"]
-	
-	url := "https://weatherapi-com.p.rapidapi.com/sports.json?q=" + location
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-	   log.Fatal(err)
-	}
-
-	req.Header.Add("X-RapidAPI-KEY", apiKey)
-	req.Header.Add("X-RapidAPI-HOST", apiHost)
-
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-	   log.Fatal(err)
-	}
-
-	defer res.Body.Close()
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-	   log.Fatal(err)
-	}	
 
 	fmt.Fprintf(w, string(body))
 }
