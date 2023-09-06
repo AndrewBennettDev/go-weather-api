@@ -24,12 +24,22 @@ func handleRequests() {
 	r.HandleFunc("/astronomy/{location}", getCurrentAstronomyData)
 	r.HandleFunc("/timezone/{location}", getTimeZone)
 	r.HandleFunc("/sports/{location}", getSports)
-	// bonus endpoint with all four, execute concurrent
+	r.HandleFunc("/all/{location}", getAll) // good luck...
 	log.Fatal(http.ListenAndServe(":8089", r)) // read about Go Contexts
 }
 
 func getList(w http.ResponseWriter, r *http.Request) {
-        fmt.Fprintf(w, "Available Endpoints:\n -/weather/{location}\n  -/astronomy/{location}\n -/timezone/{location}\n  -/sports/{location}")
+        fmt.Fprintf(w, "Available Endpoints:\n -/weather/{location}\n -/astronomy/{location}\n -/timezone/{location}\n -/sports/{location}")
+}
+
+func getAll(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	location := vars["location"]
+
+	go getCurrentWeather(w, r)
+	go getCurrentAstronomyData(w, r)
+	go getTimeZone(w, r)
+	go getSports(w, r)
 }
 
 func getCurrentWeather(w http.ResponseWriter, r *http.Request) {
