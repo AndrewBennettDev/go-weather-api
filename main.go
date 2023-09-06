@@ -20,16 +20,16 @@ func main() {
 func handleRequests() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", getList)
-	//r.HandleFunc("/weather/{location}", getCurrentWeather)
-	//r.HandleFunc("/astronomy/{location}", getCurrentAstronomyData)
-	//r.HandleFunc("/timezone/{location}", getTimeZone)
-	//r.HandleFunc("/sports/{location}", getSports)
 	r.HandleFunc("/{endpoint}/{location}", getData)
 	log.Fatal(http.ListenAndServe(":8089", r)) // read about Go Contexts
 }
 
 func getList(w http.ResponseWriter, r *http.Request) {
         fmt.Fprintf(w, "Available Endpoints:\n -/current/{location}\n -/astronomy/{location}\n -/timezone/{location}\n -/sports/{location}")
+}
+
+func getAll(w http.ResponseWriter, r *http.Request) {
+	var endpointList := []string("current", "astronomy", "timezone", "sports")
 }
 
 func getData(w http.ResponseWriter, r *http.Request) {
