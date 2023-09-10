@@ -28,15 +28,11 @@ func getList(w http.ResponseWriter, r *http.Request) {
         fmt.Fprintf(w, "Available Endpoints:\n -/current/{location}\n -/astronomy/{location}\n -/timezone/{location}\n -/sports/{location}")
 }
 
-func getAll(w http.ResponseWriter, r *http.Request) {
-	var endpointList := []string("current", "astronomy", "timezone", "sports")
-}
-
 func getData(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	endpoint := vars["endpoint"]
 	location := vars["location"]
-
+	
 	url := "https://weatherapi-com.p.rapidapi.com/" + endpoint + ".json?q=" + location
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -56,5 +52,7 @@ func getData(w http.ResponseWriter, r *http.Request) {
 	   log.Fatal(err)
 	}
 
-	fmt.Fprintf(w, string(body))
+	transformedBody := Transform(body)
+
+	fmt.Fprintf(w, string(transformedBody))
 }
