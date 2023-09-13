@@ -1,17 +1,35 @@
 package main
 
-import (
-	"encode/json"
-	"fmt"
-)
-
 type InputData struct {
-	Location	struct	`json:"location"`
-	Current		struct	`json:"current"`
+	Location	struct	{
+	Name		string	`json:"name"`
+	Region		string	`json:"region"`
+	Country		string	`json:"country"`
+	Latitude	float32	`json:"lat"`
+	Longitude	float32	`json:"lon"`
+	TimeZone	string	`json:"tz_id"`
+	LocalTimeEpoch	int32	`json:"localtime_epoch"`
+	LocalTime	string	`json:"localtime"`
+	}
+
+	Current		struct	{
+	LastUpdateEpoch	int32	`json:"last_updated_epoch"`
+	LastUpdat	string	`json:"last_updated"`
+	TempC		float32	`json:"temp_c"`
+	TempF		float32	`json:"temp_f"`
+	IsDay		int32	`json:"is_day"`
+	Condition	struct	{
+		Text		string	`json:"text"`
+		Icon		string	`json:"icon"`
+		Code		int32	`json:"code"`
+		}
+
+	}	
+
 	WindMph		float32	`json:"wind_mph"`
 	WindKph		float32	`json:"wind_kph"`
-	WingDegree	int8	`json:"wind_degree"`
-	WindDirection	float32	`json:"wind_dir"`
+	WindDegree	int8	`json:"wind_degree"`
+	WindDirection	string	`json:"wind_dir"`
 	PressureMb	float32	`json:"pressure_mb"`
 	PressureIn	float32	`json:"pressure_in"`
 	PrecipMm	float32	`json:"precip_mm"`
@@ -25,32 +43,6 @@ type InputData struct {
 	Uv		int8	`json:"uv"`
 	GustMph		float32	`json:"gust_mph"`
 	GustKph		float32	`json:"gust_kph"`
-}
-
-type Location struct {
-	Name		string	`json:"name"`
-	Region		string	`json:"region"`
-	Country		string	`json:"country"`
-	Latitude	float32	`json:"lat"`
-	Longitude	float32	`json:"lon"`
-	TimeZone	string	`json:"tz_id"`
-	LocalTimeEpoch	int32	`json:"localtime_epoch"`
-	LocalTime	string	`json:"localtime"`
-}
-
-type Current struct {
-	LastUpdateEpoch	int32	`json:"last_updated_epoch"`
-	LastUpdat	string	`json:"last_updated"`
-	TempC		float32	`json:"temp_c"`
-	TempF		float32	`json:"temp_f"`
-	IsDay		int32	`json:"is_day"`
-	Condition	struct	`json:"condition"`
-}
-
-type Condition struct {
-	Text		string	`json:"text"`
-	Icon		string	`json:"icon"`
-	Code		int32	`json:"code"`
 }
 
 type TransformedData struct {
@@ -73,25 +65,24 @@ type TransformedData struct {
 	GustMph		float32	`json:"gust_mph"`
 }
 
-func Transform(input InputData) TransformedData {
-	transformed := TransformedData{
-		City: input.location.name
-		Region: input.location.region
-		Country: input.location.country
-		LocalTime: input.location.localtime
-		TempF: input.current.temp_f
-		Condition: input.current.condition.text
-		WindMph: input.wind_mph
-		WindDegree: input.wind_mph
-		WindDir: input.wind_dir
-		PressureIn: input.pressure_in
-		PrecipIn: input.precip_in
-		Humidity: input.humidity
-		Cloud: input.cloud
-		FeelsLikeF: input.feelslike_F
-		VisMiles: input.vis_miles
-		Uv: input.uv
-		GustMph: input.gust_mph
-	}
+func Transform(input *InputData) TransformedData {
+	transformed := TransformedData {
+		City: input.Location.Name,
+		Region: input.Location.Region,
+		Country: input.Location.Country,
+		LocalTime: input.Location.LocalTime,
+		TempF: input.Current.TempF,
+		Condition: input.Current.Condition.Text,
+		WindMph: input.WindMph,
+		WindDegree: input.WindDegree,
+		WindDir: input.WindDirection,
+		PressureIn: input.PressureIn,
+		PrecipIn: input.PrecipIn,
+		Humidity: input.Humidity,
+		Cloud: input.Cloud,
+		FeelsLikeF: input.FeelsLikeF,
+		VisMiles: input.VisMiles,
+		Uv: input.Uv,
+		GustMph: input.GustMph}
 	return transformed
 }

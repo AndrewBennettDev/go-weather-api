@@ -1,17 +1,19 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
 	goconfig "github.com/iglin/go-config"
-	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 )
 
 var config = goconfig.NewConfig("./secretConfig.yaml", goconfig.Yaml)
 var apiHost = config.GetString("data.apiHost")
 var apiKey = config.GetString("data.apiKey")
+var myClient = &http.Client{Timeout: 10 * time.Second}
 
 func main() {	
 	handleRequests()
@@ -21,7 +23,7 @@ func handleRequests() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", getList)
 	r.HandleFunc("/{endpoint}/{location}", getData)
-	log.Fatal(http.ListenAndServe(":8089", r)) // read about Go Contexts
+	log.Fatal(http.ListenAndServe(":8089", r))
 }
 
 func getList(w http.ResponseWriter, r *http.Request) {
@@ -41,18 +43,20 @@ func getData(w http.ResponseWriter, r *http.Request) {
 	req.Header.Add("X-RapidAPI-Key", apiKey )
 	req.Header.Add("X-RapidAPI-Host", apiHost)
 
-	res, err := http.DefaultClient.Do(req)
+	res, err := myClient.Do(req)
 	if err != nil {
 	   log.Fatal(err)
 	}
 
-	defer res.Body.Close() //go read about defer
-	body, err := ioutil.ReadAll(res.Body)
+	defer res.Body.Close()
+	
+	target := new(InputData)
+	err = json.NewDecoder(res.Body).Decode(target)
 	if err != nil {
-	   log.Fatal(err)
+		log.Fatal(err)
 	}
 
-	transformedBody := Transform(body)
+	transformedBody := Transform(target)
 
-	fmt.Fprintf(w, string(transformedBody))
+	fmt.Fprintf(w, "%s", transformedBody)
 }
