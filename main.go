@@ -50,13 +50,13 @@ func getData(w http.ResponseWriter, r *http.Request) {
 
 	defer res.Body.Close()
 	
-	target := new(InputData)
+	target := new(InputData) 
 	err = json.NewDecoder(res.Body).Decode(target)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	transformedBody := Transform(target)
+	transformedBody := Transform(target) // NOTE: this only works for /current/ right now
 
 	fmt.Fprintf(w, "%+v", transformedBody)
 }
