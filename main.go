@@ -58,5 +58,5 @@ func getData(w http.ResponseWriter, r *http.Request) {
 
 	transformedBody := Transform(target)
 
-	fmt.Fprintf(w, "%s", transformedBody)
+	fmt.Fprintf(w, "%+v", transformedBody)
 }
