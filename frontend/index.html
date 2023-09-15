@@ -6,22 +6,26 @@
    <title>Custom Weather App</title>
    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
    <style>
+      .custom-green {
+         background-color: rgb(80, 247, 147);
+      }
       .title {
          text-align: center;
       }
 
       .data-box {
+         background-color: rgba(255, 255, 255, 0.863);
          text-align: center;
          margin: 0 auto;
          width: 60%;
          padding: 20px;
-         border: 1px solid #ccc;
+         border: 1px solid #b91818;
          border-radius: 10px;
          box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
       }
    </style>
 </head>
-<body>
+<body class="custom-green">
    <div class="container">
       <div class="row">
          <div class="col-md-12 title">
@@ -32,25 +36,44 @@
          <div class="col-md-12 data-box">
             <h2>Data from Database</h2>
             <ul id="data-list"></ul>
+            <form id="apiForm">
+               <div class="form-group">
+                   <label for="param1Input">Enter Endpoint:</label>
+                   <input type="text" class="form-control" id="endpoint" placeholder="Endpoint...">
+               </div>
+               <div class="form-group">
+                   <label for="param2Input">Enter Zip Code:</label>
+                   <input type="text" class="form-control" id="zip" placeholder="Zip code...">
+               </div>
+               <button type="button" class="btn btn-primary" id="apiButton">Get Results!</button>
+           </form>
          </div>
       </div>
    </div>
 
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
    <script>
-      fetch('/data')
-         .then((response) => response.json())
-         .then((data) => {
-            const dataList = document.getElementById('data-list');
-
-            data.forEach((item) => {
-               const listItem = document.createElement('li');
-               listItem.textContent = item.column_name; // Replace with column name once created
-               dataList.appendChild(listItem);
-            });
-         })
-         .catch((error) => {
-            console.error('Error fetching data:', error);
-         });
-   </script>
+      function callGoApi(endpoint, zip) {
+          fetch(`/${endpoint}/${zip}`)
+              .then(response => response.text())
+              .then(data => {
+                  alert(data);
+              })
+              .catch(error => {
+                  console.error('Error:', error);
+              });
+      }
+      // placeholder for database func:
+      //
+      // fetch('/').then(response => response.text()).then(data => {
+      //     document.getElementById('data').textContent = data;
+      // });
+  
+      document.getElementById('apiButton').addEventListener('click', function() {
+          const endpoint = document.getElementById('endpoint').value;
+          const zip = document.getElementById('zipCode').value;
+          callGoApi(endpoint, zip);
+      });
+  </script>
 </body>
 </html>
