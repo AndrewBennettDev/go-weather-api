@@ -38,8 +38,10 @@
             <ul id="data-list"></ul>
             <form id="apiForm">
                <div class="form-group">
-                   <label for="param1Input">Enter Endpoint:</label>
-                   <input type="text" class="form-control" id="endpoint" placeholder="Endpoint...">
+                   <label for="param1Input">Select Endpoint:</label>
+                   <div id="param1Buttons">
+                     <button type="button" class="btn btn-secondary param1-button" data-value="current">Weather</button>
+                 </div>
                </div>
                <div class="form-group">
                    <label for="param2Input">Enter Zip Code:</label>
@@ -71,14 +73,16 @@
                   console.error('Error:', error);
               });
       }
-      // placeholder for database func:
-      //
-      // fetch('/').then(response => response.text()).then(data => {
-      //     document.getElementById('data').textContent = data;
-      // });
+      const param1Buttons = document.querySelectorAll('.param1-button');
+      param1Buttons.forEach(button => {
+        button.addEventListener('click', function() {
+            const param1Value = this.getAttribute('data-value');
+            document.getElementById('param1Value').textContent = param1Value;
+        });
+    });
   
-	document.getElementById('apiButton').addEventListener('click', function() {
-          const endpoint = document.getElementById('endpoint').value;
+	   document.getElementById('apiButton').addEventListener('click', function() {
+          const endpoint = document.getElementById('param1Value').textContent;
           const zip = document.getElementById('zipCode').value;
           callGoApi(endpoint, zip);
       });
