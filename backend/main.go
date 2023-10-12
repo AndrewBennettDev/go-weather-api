@@ -26,8 +26,8 @@ func handleRequests() {
 	r.HandleFunc("/", getList)
 	r.HandleFunc("/{endpoint}/{location}", getData)
 	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With"})
-	originsOk := handlers.AllowedOrigins([]string{"http://127.0.0.1:8080"})
-	methodsOk := handlers.AllowedMethods([]string{"GET"})
+	originsOk := handlers.AllowedOrigins([]string{"http://127.0.0.1:3000"})
+	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"})
 
 	log.Fatal(http.ListenAndServe(":8089", handlers.CORS(originsOk, headersOk, methodsOk)(r)))
 	//log.Fatal(http.ListenAndServe(":8089", r))
