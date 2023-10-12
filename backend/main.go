@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	goconfig "github.com/iglin/go-config"
 )
@@ -24,7 +25,12 @@ func handleRequests() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", getList)
 	r.HandleFunc("/{endpoint}/{location}", getData)
-	log.Fatal(http.ListenAndServe(":8089", r))
+	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With"})
+	originsOk := handlers.AllowedOrigins([]string{"http://127.0.0.1:8080"})
+	methodsOk := handlers.AllowedMethods([]string{"GET"})
+
+	log.Fatal(http.ListenAndServe(":8089", handlers.CORS(originsOk, headersOk, methodsOk)(r)))
+	//log.Fatal(http.ListenAndServe(":8089", r))
 }
 
 func getList(w http.ResponseWriter, r *http.Request) {
