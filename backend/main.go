@@ -42,6 +42,7 @@ func getData(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
+	// just a personal reminder in case I forget to add the secret...
 	if apiKey == "secret" {
 		fmt.Fprintf(w, "%s", "You need an API key to call this endpoint!")
 	} else {
