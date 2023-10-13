@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: go-weather-api
+spec:
+  containers:
+    - name: goApi
+      image: alpine
+      env:
+        - name: API_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: go-weather-credentials
+              key: apiHost
+        - name: API_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: go-weather-credentials
+              key: apiKey
