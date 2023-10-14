@@ -26,11 +26,10 @@ func handleRequests() {
 	r.HandleFunc("/", getList)
 	r.HandleFunc("/{endpoint}/{location}", getData)
 	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With"})
-	originsOk := handlers.AllowedOrigins([]string{"http://127.0.0.1:3000"})
+	originsOk := handlers.AllowedOrigins([]string{"http://127.0.0.1:5173"})
 	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"})
 
 	log.Fatal(http.ListenAndServe(":8089", handlers.CORS(originsOk, headersOk, methodsOk)(r)))
-	//log.Fatal(http.ListenAndServe(":8089", r))
 }
 
 func getList(w http.ResponseWriter, r *http.Request) {
@@ -48,7 +47,6 @@ func getData(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	// just a personal reminder in case I forget to add the secret...
 	if apiKey == "secret" {
 		fmt.Fprintf(w, "%s", "You need an API key to call this endpoint!")
 	} else {
