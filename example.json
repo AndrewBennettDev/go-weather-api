@@ -1,3 +1,4 @@
+// Current Weather response body:
 {
   "location": {
     "name": "Senoia",
@@ -37,5 +38,31 @@
     "uv": 5,
     "gust_mph": 9.4,
     "gust_kph": 15.1
+  }
+}
+
+// Astronomy response body:
+{
+  "location": {
+    "name": "Senoia",
+    "region": "Georgia",
+    "country": "USA United States of America",
+    "lat": 33.29,
+    "lon": -84.59,
+    "tz_id": "America/New_York",
+    "localtime_epoch": 1697589779,
+    "localtime": "2023-10-17 20:42"
+  },
+  "astronomy": {
+    "astro": {
+      "sunrise": "07:45 AM",
+      "sunset": "07:02 PM",
+      "moonrise": "11:41 AM",
+      "moonset": "09:30 PM",
+      "moon_phase": "Waxing Crescent",
+      "moon_illumination": "11",
+      "is_moon_up": 1,
+      "is_sun_up": 0
+    }
   }
 }
