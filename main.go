@@ -24,7 +24,7 @@ func main() {
 func handleRequests() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", getList)
-	r.HandleFunc("/{endpoint}/{location}", getData)
+	r.HandleFunc("/{location}", getData)
 	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With"})
 	originsOk := handlers.AllowedOrigins([]string{"http://127.0.0.1:3000"})
 	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"})
@@ -33,16 +33,21 @@ func handleRequests() {
 }
 
 func getList(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Available Endpoints:\n -/current/{location}\n -/astronomy/{location}\n -/timezone/{location}\n -/sports/{location}")
+	fmt.Fprintf(w, "Use /{location} endpoint to get transformed data from Current Weather and Astronomy")
 }
 
 func getData(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	endpoint := vars["endpoint"]
 	location := vars["location"]
 
-	url := "https://weatherapi-com.p.rapidapi.com/" + endpoint + ".json?q=" + location
-	req, err := http.NewRequest("GET", url, nil)
+	url1 := "https://weatherapi-com.p.rapidapi.com/current.json?q=" + location
+	req1, err := http.NewRequest("GET", url1, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	url2 := "https://weatherapi-com.p.rapidapi.com/astronomy.json?q=" + location
+	req2, err := http.NewRequest("GET", url2, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -50,24 +55,41 @@ func getData(w http.ResponseWriter, r *http.Request) {
 	if apiKey == "secret" {
 		fmt.Fprintf(w, "%s", "You need an API key to call this endpoint!")
 	} else {
-		req.Header.Add("X-RapidAPI-Key", apiKey)
-		req.Header.Add("X-RapidAPI-Host", apiHost)
 
-		res, err := myClient.Do(req)
-		if err != nil {
-			log.Fatal(err)
-		}
+	  req1.Header.Add("X-RapidAPI-Key", apiKey)
+	  req1.Header.Add("X-RapidAPI-Host", apiHost)
 
-		defer res.Body.Close()
+	  req2.Header.Add("X-RapidAPI-Key", apiKey)
+	  req2.Header.Add("X-RapidAPI-Host", apiHost)
+	  
+	  res1, err := myClient.Do(req1)
+	  if err != nil {
+		log.Fatal(err)
+	  }
 
-		target := new(InputData)
-		err = json.NewDecoder(res.Body).Decode(target)
-		if err != nil {
-			log.Fatal(err)
-		}
+	  res2, err := myClient.Do(req2)
+	  if err != nil {
+		log.Fatal(err)
+	  }
 
-		transformedBody := Transform(target) // NOTE: this only works for /current/ right now
-		
-		fmt.Fprintf(w, "%+v", transformedBody)
+	  defer res1.Body.Close()
+	  defer res2.Body.Close()
+
+	  weather := new(InputData)
+	  astro := new(AstroData)
+
+	  err = json.NewDecoder(res1.Body).Decode(weather)
+	  if err != nil {
+		log.Fatal(err)
+	  }
+
+	  err = json.NewDecoder(res2.Body).Decode(astro)
+	  if err != nil {
+		log.Fatal(err)
+	  }
+
+	  transformedBody := Transform(weather, astro)
+	
+	  fmt.Fprintf(w, "%+v", transformedBody)
 	}
 }

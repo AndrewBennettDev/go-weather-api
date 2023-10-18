@@ -49,6 +49,31 @@ type InputData struct {
 
 }
 
+type AstroData struct {
+	Location struct {
+	Name		string	`json:"name"`
+	Region		string	`json:"region"`
+	Country		string	`json:"country"`
+	Latitude	float32	`json:"lat"`
+	Longitude	float32	`json:"lon"`
+	TimeZone	string	`json:"tz_id"`
+	LocalTimeEpoch	int32	`json:"localtime_epoch"`
+	LocalTime	string	`json:"localtime"`
+	} `json:"location"`
+	Astronomy struct {
+	    Astro struct {
+		Sunrise		string	`json:"sunrise"`
+		Sunset		string	`json:"sunset"`
+		Moonrise	string	`json:"moonrise"`
+		Moonset		string	`json:"moonset"`
+		MoonPhase	string	`json:"moon_phase"`
+		MoonIllum	string	`json:"moon_illumination"`
+		IsMoonUp	int8	`json:"is_moon_up"`
+		IsSunUp		int8	`json:"is_sun_up"`
+	    } `json:"astro"`
+	} `json:"astronomy"`
+}
+
 type TransformedData struct {
 	City		string	`json:"City"`
 	Region		string	`json:"Region"`
@@ -67,9 +92,19 @@ type TransformedData struct {
 	VisMiles	float32	`json:"Visibility(Miles)"`
 	Uv		float32	`json:"UV"`
 	GustMph		float32	`json:"Gust(MPH)"`
+	Sunrise		string	`json:"Sunrise"`
+	Sunset		string	`json:"Sunset"`
+	Moonrise	string	`json:"Moonrise"`
+	Moonset		string	`json:"Moonset"`
+	MoonPhase	string	`json:"Moon Phase"`
+	MoonIllum	string	`json:"Moon Illumination"`
+	IsMoonUp	int8	`json:"Is Moon Up"`
+	IsSunUp		int8	`json:"Is Sun Up"`
+
+
 }
 
-func Transform(input *InputData) string {
+func Transform(input *InputData, astroData *AstroData) string {
 	transformed := TransformedData {
 		City: input.Location.Name,
 		Region: input.Location.Region,
@@ -87,7 +122,15 @@ func Transform(input *InputData) string {
 		FeelsLikeF: input.Current.FeelsLikeF,
 		VisMiles: input.Current.VisMiles,
 		Uv: input.Current.Uv,
-		GustMph: input.Current.GustMph}
+		GustMph: input.Current.GustMph,
+		Sunrise: astroData.Astronomy.Astro.Sunrise,
+		Sunset: astroData.Astronomy.Astro.Sunset,
+		Moonrise: astroData.Astronomy.Astro.Moonrise,
+		Moonset: astroData.Astronomy.Astro.Moonset,
+		MoonPhase: astroData.Astronomy.Astro.MoonPhase,
+		MoonIllum: astroData.Astronomy.Astro.MoonIllum,
+		IsMoonUp: astroData.Astronomy.Astro.IsMoonUp,
+		IsSunUp: astroData.Astronomy.Astro.IsSunUp}
 	
 	formattedBody, err := json.MarshalIndent(transformed, "", "    ")
 
