@@ -26,7 +26,7 @@ func handleRequests() {
 	r.HandleFunc("/", getList)
 	r.HandleFunc("/{endpoint}/{location}", getData)
 	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With"})
-	originsOk := handlers.AllowedOrigins([]string{"http://127.0.0.1:5173"})
+	originsOk := handlers.AllowedOrigins([]string{"http://127.0.0.1:3000"})
 	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"})
 
 	log.Fatal(http.ListenAndServe(":8089", handlers.CORS(originsOk, headersOk, methodsOk)(r)))
@@ -67,7 +67,12 @@ func getData(w http.ResponseWriter, r *http.Request) {
 		}
 
 		transformedBody := Transform(target) // NOTE: this only works for /current/ right now
+		formattedBody, err := json.MarshalIndent(transformedBody, "", "    ")
 
-		fmt.Fprintf(w, "%+v", transformedBody)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Fprintf(w, "%+v", string(formattedBody))
 	}
 }

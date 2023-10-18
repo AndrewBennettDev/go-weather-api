@@ -45,23 +45,23 @@ type InputData struct {
 }
 
 type TransformedData struct {
-	City		string	`json:"city"`
-	Region		string	`json:"region"`
-	Country		string	`json:"coutry"`
-	LocalTime	string	`json:"localtime"`
-	TempF		float32	`json:"temp_f"`
-	Condition	string	`json:"condition"`
-	WindMph		float32	`json:"wind_mph"`
-	WindDegree	float32	`json:"wind_degree"`
-	WindDir		string	`json:"wind_dir"`
-	PressureIn	float32	`json:"press_in"`
-	PrecipIn	float32	`json:"precip_in"`
-	Humidity	float32	`json:"humidity"`
-	Cloud		float32	`json:"cloud"`
-	FeelsLikeF	float32	`json:"feelslike_f"`
-	VisMiles	float32	`json:"vis_miles"`
-	Uv		float32	`json:"uv"`
-	GustMph		float32	`json:"gust_mph"`
+	City		string	`json:"City"`
+	Region		string	`json:"Region"`
+	Country		string	`json:"Country"`
+	LocalTime	string	`json:"Local Time"`
+	TempF		float32	`json:"Temp F"`
+	Condition	string	`json:"Condition"`
+	WindMph		float32	`json:"Wind MPH"`
+	WindDegree	float32	`json:"Wind Degree"`
+	WindDir		string	`json:"Wind Direction"`
+	PressureIn	float32	`json:"Pressure(inches)"`
+	PrecipIn	float32	`json:"Precipitaion(inches)"`
+	Humidity	float32	`json:"Humidity"`
+	Cloud		float32	`json:"Cloud"`
+	FeelsLikeF	float32	`json:"Feels Like F"`
+	VisMiles	float32	`json:"Visibility(Miles)"`
+	Uv		float32	`json:"UV"`
+	GustMph		float32	`json:"Gust(MPH)"`
 }
 
 func Transform(input *InputData) TransformedData {
