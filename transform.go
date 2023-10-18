@@ -1,5 +1,10 @@
 package main
 
+import (
+	"encoding/json"
+	"log"
+)
+
 type InputData struct {
 	Location	struct	{
 	Name		string	`json:"name"`
@@ -64,7 +69,7 @@ type TransformedData struct {
 	GustMph		float32	`json:"Gust(MPH)"`
 }
 
-func Transform(input *InputData) TransformedData {
+func Transform(input *InputData) string {
 	transformed := TransformedData {
 		City: input.Location.Name,
 		Region: input.Location.Region,
@@ -83,5 +88,11 @@ func Transform(input *InputData) TransformedData {
 		VisMiles: input.Current.VisMiles,
 		Uv: input.Current.Uv,
 		GustMph: input.Current.GustMph}
-	return transformed
+	
+	formattedBody, err := json.MarshalIndent(transformed, "", "    ")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	return string(formattedBody)
 }

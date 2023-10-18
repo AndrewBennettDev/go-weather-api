@@ -67,12 +67,7 @@ func getData(w http.ResponseWriter, r *http.Request) {
 		}
 
 		transformedBody := Transform(target) // NOTE: this only works for /current/ right now
-		formattedBody, err := json.MarshalIndent(transformedBody, "", "    ")
-
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		fmt.Fprintf(w, "%+v", string(formattedBody))
+		
+		fmt.Fprintf(w, "%+v", transformedBody)
 	}
 }
