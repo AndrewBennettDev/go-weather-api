@@ -1,13 +1,16 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
-	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	goconfig "github.com/iglin/go-config"
 )
@@ -25,11 +28,22 @@ func handleRequests() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", getList)
 	r.HandleFunc("/{location}", getData)
-	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With"})
-	originsOk := handlers.AllowedOrigins([]string{"http://127.0.0.1:3000"})
-	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"})
 
-	log.Fatal(http.ListenAndServe(":8089", handlers.CORS(originsOk, headersOk, methodsOk)(r)))
+	srv := &http.Server{
+		Handler:	r,
+		Addr:		":8089",
+		ReadTimeout:	10 * time.Second,
+		WriteTimeout:	10 * time.Second,
+	}
+
+	go func() {
+	    log.Println("Starting server...")
+	    if err := srv.ListenAndServe; err != nil {
+	        log.Fatal(err)
+	    }
+	}()
+	
+	waitForShutdown(srv)
 }
 
 func getList(w http.ResponseWriter, r *http.Request) {
@@ -92,4 +106,18 @@ func getData(w http.ResponseWriter, r *http.Request) {
 	
 	  fmt.Fprintf(w, "%+v", transformedBody)
 	}
+}
+
+func waitForShutdown(srv *http.Server) {
+	interruptChan := make(chan os.Signal, 1)
+	signal.Notify(interruptChan, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
+
+	<-interruptChan
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+	srv.Shutdown(ctx)
+
+	log.Println("Shutting down")
+	os.Exit(0)
 }
