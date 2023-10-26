@@ -20,11 +20,11 @@ func CreateTable() {
 
     {
         query := `
-            CREATE TABLE users (
+            CREATE TABLE weather (
                 id INT AUTO_INCREMENT,
                 username TEXT NOT NULL,
                 password TEXT NOT NULL,
-                created_at DATETIME,
+		created_at DATETIME,
                 PRIMARY KEY (id)
             );`
 
