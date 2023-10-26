@@ -27,6 +27,8 @@ func main() {
 func handleRequests() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", getList)
+	r.HandleFunc("/healthCheck", healthHandler)
+	r.HandleFunc("/readinessCheck", readinessHandler)
 	r.HandleFunc("/{location}", getData)
 
 	srv := &http.Server{
@@ -38,7 +40,7 @@ func handleRequests() {
 
 	go func() {
 	    log.Println("Starting server...")
-	    if err := srv.ListenAndServe; err != nil {
+	    if err := srv.ListenAndServe(); err != nil {
 	        log.Fatal(err)
 	    }
 	}()
@@ -48,6 +50,14 @@ func handleRequests() {
 
 func getList(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Use /{location} endpoint to get transformed data from Current Weather and Astronomy")
+}
+
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+}
+
+func readinessHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
 }
 
 func getData(w http.ResponseWriter, r *http.Request) {
