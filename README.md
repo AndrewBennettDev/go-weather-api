@@ -1,11 +1,11 @@
 Welcome to my personal Weather API powered by Go! This has been a fun personal project for really learning Golang,
 as well as thinking more about what I want in a backend service. As of this version there are three main components:
 
-1) API - using gorilla/mux you can currently call four endpoints from the free rapidapi weather service.
-This will ONLY WORK with the /current/ endpoint right now because of the transform method
+1) API - using gorilla/mux you can currently call a single endpoint that calls both the Current Weather and Astronomy endpoints from Weather API.
+The Transform class then combines these and returns one set of data. There are placeholders for healthchecks now and a "list" endpoint
+in case I implement more endpoints later.
 2) Transform - each API call returns data that is not useful for me. Rather than store and display things I do not need
-I am using a simple transform function. As a POC I only have this implemented for the /current/ endpoint, so you will not
-get usable data from the other three endpoints for now
+I am using a simple transform function. 
 3) Database - as of my most recent work this layer now interacts with a locally hosted instance of MariaDB/MySQL. I only have
 a basic implementation that allows me to create the table if it does not exist, and write data to that table whenever the primary
 endpoint is hit. Other queries to be written soon!
