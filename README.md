@@ -6,9 +6,9 @@ This will ONLY WORK with the /current/ endpoint right now because of the transfo
 2) Transform - each API call returns data that is not useful for me. Rather than store and display things I do not need
 I am using a simple transform function. As a POC I only have this implemented for the /current/ endpoint, so you will not
 get usable data from the other three endpoints for now
-3) Database - this is non-functional at the moment and the database.go file is just a basic template/placeholder. Eventually
-this service will call one or all of the endpoints at regular intervals and write the data to a SQL database. This will 
-eventually EVENTUALLY be used with some ML to make predicitions for weather and see how it lines up with the actual weather.
+3) Database - as of my most recent work this layer now interacts with a locally hosted instance of MariaDB/MySQL. I only have
+a basic implementation that allows me to create the table if it does not exist, and write data to that table whenever the primary
+endpoint is hit. Other queries to be written soon!
 
 Once these pieces are all functional this will live on my personal website (oh yeah, I need to build that, too...) as a widget,
 with the goal of implementing this same basic format in multiple languages so you can see how they perform relative to the others.

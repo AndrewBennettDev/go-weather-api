@@ -4,7 +4,7 @@ GOCLEAN := $(GO) clean
 GOTEST := $(GO) test
 GOGET := $(GO) get
 
-APP_NAME := your-app-name
+APP_NAME := go-weather-app
 
 VERSION := 1.0.0
 LDFLAGS := -ldflags "-X main.Version=$(VERSION)"
