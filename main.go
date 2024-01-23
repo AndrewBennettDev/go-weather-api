@@ -128,9 +128,10 @@ func getData(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 		}
 
-		transformedBody := Transform(weather, astro)
+		stringBody, transformedBody := Transform(weather, astro)
+		Insert(transformedBody)
 
-		fmt.Fprintf(w, "%+v", transformedBody)
+		fmt.Fprintf(w, "%+v", stringBody)
 	}
 }
 

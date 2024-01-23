@@ -101,7 +101,7 @@ type TransformedData struct {
 	IsSunUp    int8    `json:"Is Sun Up"`
 }
 
-func Transform(input *InputData, astroData *AstroData) string {
+func Transform(input *InputData, astroData *AstroData) (string, TransformedData) {
 	transformed := TransformedData{
 		City:       input.Location.Name,
 		Region:     input.Location.Region,
@@ -134,5 +134,5 @@ func Transform(input *InputData, astroData *AstroData) string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return string(formattedBody)
+	return string(formattedBody), transformed
 }
