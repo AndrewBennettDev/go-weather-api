@@ -45,11 +45,17 @@ func MongoInit() {
 	collection = client.Database(databaseName).Collection(collectionName)
 }
 
-func CreateItem(input TransformedData) {
-	//TODO: write create method
+func MongoInsert(input TransformedData) {
+	result, err := collection.InsertOne(context.Background(), input)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	id := result.InsertedID
+	fmt.Println(id)
 }
 
-func GetItemByCity(input TransformedData) {
+func MongoGetByCity(input TransformedData) {
 	var result bson.M
 	city := "Senoia"
 	err := collection.FindOne(context.TODO(), bson.D{{Key: "City", Value: city}}).Decode(&result)
@@ -68,7 +74,7 @@ func GetItemByCity(input TransformedData) {
 	fmt.Printf("%s\n", jsonData)
 }
 
-func UpdateItem() {
+func MongoUpdate() {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -84,7 +90,7 @@ func UpdateItem() {
 	fmt.Println(doc, decodeErr)
 }
 
-func DeleteItem(input TransformedData) {
+func MongoDeleteItem(input TransformedData) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 

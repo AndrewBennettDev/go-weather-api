@@ -129,7 +129,9 @@ func getData(w http.ResponseWriter, r *http.Request) {
 		}
 
 		stringBody, transformedBody := Transform(weather, astro)
+
 		Insert(transformedBody)
+		MongoInsert(transformedBody)
 
 		fmt.Fprintf(w, "%+v", stringBody)
 	}
