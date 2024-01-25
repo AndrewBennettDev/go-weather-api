@@ -12,7 +12,6 @@ var dsn = config.GetString("data.dsn")
 
 func CreateTable() {
 	db, err := sql.Open("mysql", dsn)
-	// "it is rarely necessary to close a DB" - https://pkg.go.dev/database/sql#Open
 	if err != nil {
 		log.Fatal(err)
 	}
