@@ -12,4 +12,6 @@ spec:
           - name: go-weather-api
             image: goApi
             imagePullPolicy: IfNotPresent
+            command:
+              - curl -X GET http://127.0.0.1:8089/30276
           restartPolicy: OnFailure
