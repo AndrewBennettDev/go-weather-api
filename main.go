@@ -36,6 +36,8 @@ func main() {
 
 	fmt.Printf("Context: %+v\n Client: %+v\n", ctx, client)
 
+	// init for testing purposes, not final implementation:
+	MongoInit()
 	handleRequests()
 
 }
@@ -130,7 +132,8 @@ func getData(w http.ResponseWriter, r *http.Request) {
 
 		stringBody, transformedBody := Transform(weather, astro)
 
-		Insert(transformedBody)
+		// commenting out MySQL impl for testing Mongo:
+		//Insert(transformedBody)
 		MongoInsert(transformedBody)
 
 		fmt.Fprintf(w, "%+v", stringBody)

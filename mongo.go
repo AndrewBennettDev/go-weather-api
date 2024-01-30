@@ -16,7 +16,7 @@ import (
 var collection *mongo.Collection
 
 func MongoInit() {
-	mongoURI := os.Getenv("MONGO_URI")
+	mongoURI := "127.0.0.1:27017" //os.Getenv("MONGO_URI")
 	if mongoURI == "" {
 		log.Fatal("MONGO_URI environment variable is not set")
 	}
@@ -32,7 +32,7 @@ func MongoInit() {
 		log.Fatal(err)
 	}
 
-	databaseName := os.Getenv("MONGO_DB_NAME")
+	databaseName := "mongo-weather-db" //os.Getenv("MONGO_DB_NAME")
 	if databaseName == "" {
 		log.Fatal("MONGO_DB_NAME environment variable is not set")
 	}
@@ -57,6 +57,7 @@ func MongoInsert(input TransformedData) {
 
 func MongoGetByCity(input TransformedData) {
 	var result bson.M
+	// hard code for testing purposes:
 	city := "Senoia"
 	err := collection.FindOne(context.TODO(), bson.D{{Key: "City", Value: city}}).Decode(&result)
 	if err == mongo.ErrNoDocuments {
@@ -78,6 +79,7 @@ func MongoUpdate() {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
+	// limited use case for testing:
 	result := collection.FindOneAndUpdate(ctx, bson.D{{Key: "currentTime", Value: "2024-01-25 10:13"}},
 		bson.D{{Key: "City", Value: "UPDATED_CITY"}})
 	if result.Err() != nil {
@@ -94,6 +96,7 @@ func MongoDeleteItem(input TransformedData) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
+	// also limited for testing:
 	filter := bson.M{"currentTime": "2024-01-25 10:13"}
 
 	result, err := collection.DeleteOne(ctx, filter)
