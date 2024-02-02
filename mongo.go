@@ -5,7 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"os"
+
+	//"os"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -16,7 +17,7 @@ import (
 var collection *mongo.Collection
 
 func MongoInit() {
-	mongoURI := "127.0.0.1:27017" //os.Getenv("MONGO_URI")
+	mongoURI := "mongodb://127.0.0.1:27017" //os.Getenv("MONGO_URI")
 	if mongoURI == "" {
 		log.Fatal("MONGO_URI environment variable is not set")
 	}
@@ -37,7 +38,7 @@ func MongoInit() {
 		log.Fatal("MONGO_DB_NAME environment variable is not set")
 	}
 
-	collectionName := os.Getenv("MONGO_COLLECTION_NAME")
+	collectionName := "mongoWeather" //os.Getenv("MONGO_COLLECTION_NAME")
 	if collectionName == "" {
 		log.Fatal("MONGO_COLLECTION_NAME environment variable is not set")
 	}

@@ -13,28 +13,29 @@ import (
 
 	"github.com/gorilla/mux"
 	goconfig "github.com/iglin/go-config"
-	"github.com/okta/okta-sdk-golang/v2/okta"
+	//"github.com/okta/okta-sdk-golang/v2/okta"
 )
 
 var config = goconfig.NewConfig("./secretConfig.yaml", goconfig.Yaml)
 var apiHost = config.GetString("data.apiHost")
 var apiKey = config.GetString("data.apiKey")
-var oktaUrl = config.GetString("data.oktaUrl")
-var oktaKey = config.GetString("data.oktaKey")
+
+// var oktaUrl = config.GetString("data.oktaUrl")
+// var oktaKey = config.GetString("data.oktaKey")
 var myClient = &http.Client{Timeout: 10 * time.Second}
 
 func main() {
-	ctx, client, err := okta.NewClient(
-		context.TODO(),
-		okta.WithOrgUrl(oktaUrl),
-		okta.WithToken(oktaKey),
-	)
+	// ctx, client, err := okta.NewClient(
+	// 	context.TODO(),
+	// 	okta.WithOrgUrl(oktaUrl),
+	// 	okta.WithToken(oktaKey),
+	// )
 
-	if err != nil {
-		fmt.Printf("Error: %v\n", err)
-	}
+	// if err != nil {
+	// 	fmt.Printf("Error: %v\n", err)
+	// }
 
-	fmt.Printf("Context: %+v\n Client: %+v\n", ctx, client)
+	// fmt.Printf("Context: %+v\n Client: %+v\n", ctx, client)
 
 	// init for testing purposes, not final implementation:
 	MongoInit()
@@ -130,14 +131,17 @@ func getData(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 		}
 
-		stringBody, transformedBody := Transform(weather, astro)
-
-		// commenting out MySQL impl for testing Mongo:
-		//Insert(transformedBody)
-		MongoInsert(transformedBody)
-
-		fmt.Fprintf(w, "%+v", stringBody)
+		transformAndWrite(w, weather, astro)
 	}
+}
+
+func transformAndWrite(w http.ResponseWriter, weather *InputData, astro *AstroData) {
+	stringBody, transformedBody := Transform(weather, astro)
+
+	// Insert(transformedBody)
+	MongoInsert(transformedBody)
+
+	fmt.Fprintf(w, "%+v", stringBody)
 }
 
 func waitForShutdown(srv *http.Server) {
