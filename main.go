@@ -13,30 +13,14 @@ import (
 
 	"github.com/gorilla/mux"
 	goconfig "github.com/iglin/go-config"
-	//"github.com/okta/okta-sdk-golang/v2/okta"
 )
 
 var config = goconfig.NewConfig("./secretConfig.yaml", goconfig.Yaml)
 var apiHost = config.GetString("data.apiHost")
 var apiKey = config.GetString("data.apiKey")
-
-// var oktaUrl = config.GetString("data.oktaUrl")
-// var oktaKey = config.GetString("data.oktaKey")
 var myClient = &http.Client{Timeout: 10 * time.Second}
 
 func main() {
-	// ctx, client, err := okta.NewClient(
-	// 	context.TODO(),
-	// 	okta.WithOrgUrl(oktaUrl),
-	// 	okta.WithToken(oktaKey),
-	// )
-
-	// if err != nil {
-	// 	fmt.Printf("Error: %v\n", err)
-	// }
-
-	// fmt.Printf("Context: %+v\n Client: %+v\n", ctx, client)
-
 	// init for testing purposes, not final implementation:
 	MongoInit()
 	handleRequests()
@@ -46,8 +30,6 @@ func main() {
 func handleRequests() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", getList)
-	r.HandleFunc("/healthCheck", healthHandler)
-	r.HandleFunc("/readinessCheck", readinessHandler)
 	r.HandleFunc("/{location}", getData)
 
 	srv := &http.Server{
@@ -69,14 +51,6 @@ func handleRequests() {
 
 func getList(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Use /{location} endpoint to get transformed data from Current Weather and Astronomy")
-}
-
-func healthHandler(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
-}
-
-func readinessHandler(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
 }
 
 func getData(w http.ResponseWriter, r *http.Request) {
