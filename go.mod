@@ -1,4 +1,4 @@
-module go-weather-api
+module github.com/AndrewBennettDev/go-weather-api
 
 go 1.19
 
