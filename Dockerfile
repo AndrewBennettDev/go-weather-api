@@ -11,5 +11,5 @@ FROM alpine:3.18 AS build-release-stage
 WORKDIR /
 COPY --from=build-stage /go-weather-api /go-weather-api
 EXPOSE 8089
-USER nonroot:nonroot
+USER root:root
 ENTRYPOINT ["/go-weather-api"]
