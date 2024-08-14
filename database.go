@@ -8,7 +8,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-var dsn = config.GetString("data.dsn")
+var dsn = "placeholder" //config.GetString("data.dsn")
 
 func CreateTable() {
 	db, err := sql.Open("mysql", dsn)

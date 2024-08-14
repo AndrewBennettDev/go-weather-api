@@ -12,12 +12,12 @@ import (
 	"time"
  
 	"github.com/gorilla/mux"
-	goconfig "github.com/iglin/go-config"
+//	goconfig "github.com/iglin/go-config"
 )
 
-var config = goconfig.NewConfig("./secretConfig.yaml", goconfig.Yaml)
-var apiHost = config.GetString("data.apiHost")
-var apiKey = config.GetString("data.apiKey")
+//var config = goconfig.NewConfig("./secretConfig.yaml", goconfig.Yaml)
+var apiHost = "weatherapi-com.p.rapidapi.com" //config.GetString("data.apiHost")
+var apiKey = "api_key_here" //config.GetString("data.apiKey")
 var myClient = &http.Client{Timeout: 10 * time.Second}
 
 func main() {
