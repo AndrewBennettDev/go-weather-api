@@ -14,4 +14,6 @@ Once these pieces are all functional this will live on my personal website (oh y
 with the goal of implementing this same basic format in multiple languages so you can see how they perform relative to the others.
 This will likely be a running project for many years as I continue to add fun bits to it!
 
+Note: this repo lives on GitHub and GitLab; I love both so there may eventually be deploy files for either/both!
+
 I am always open to constructive criticism and suggestions, so please do not hesitate to point out errors or potential optimisations.
