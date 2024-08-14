@@ -1,9 +1,10 @@
-#Weather API (Golang)
-###Intro
+# Weather API (Golang)
+
+### Intro
 Welcome to my personal Weather API powered by Go! This has been a fun personal project for really learning Golang,
 as well as thinking more about what I want in a backend service. As of this version there are three main components:
 
-###Components
+### Components
 1) API - using gorilla/mux you can currently call a single endpoint that calls both the Current Weather and Astronomy endpoints from Weather API.
 The Transform class then combines these and returns one set of data. There are placeholders for healthchecks now and a "list" endpoint
 in case I implement more endpoints later.
@@ -15,7 +16,7 @@ endpoint is hit. Other queries to be written soon!
 3a) Mongo Databse - I am also experimenting with MongoDB, and eventually I would like to be writing to both (locally) whenever I hit the weather
 and astronomy endpoints. For now you will likely see one or the other implemented as I'm learning and experimenting.
 
-###Other Notes
+### Other Notes
 Once these pieces are all functional this will live on my personal website (oh yeah, I need to build that, too...) as a widget,
 with the goal of implementing this same basic format in multiple languages so you can see how they perform relative to the others.
 This will likely be a running project for many years as I continue to add fun bits to it!
